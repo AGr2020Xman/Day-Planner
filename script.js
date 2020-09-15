@@ -1,11 +1,18 @@
-var previousEntries = [{ () }];
+var previousEntries = [{}];
+var now = moment();
+var currentDay = $('#currentDay')
+
 
 var timeblocks = $("#timeblocks");
 
 // incase i need to initialise moment.js
-var momentTime = () => {
-
+var currentDateTime = () => {
+    
 };
+
+
+
+
 
 var 
 
@@ -31,6 +38,7 @@ var createTimeSlots = () => {
 
 // do not allow tampering with times in the past
 var lockPreviousTimeSlots = () => {
+    if 
 
 };
 

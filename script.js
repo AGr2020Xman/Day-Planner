@@ -1,3 +1,5 @@
+// TODO: save all function, clear all function, change event+live local storage function (editEntry), 
+
 $(document).ready(function () {
   refreshPageOnHour();
   currentDateTime();
@@ -27,9 +29,7 @@ var refreshPageOnHour = () => {
 var showAndHideCard = () => {
   if (secondsPassed === totalTimeUntilRefresh) {
     // fallback on confirm if all else fails
-    var refreshPage = $().text(
-      "It's a new hour. DO you want to reload your planner to reflect changes?"
-    );
+    var refreshPage = ;
     if (refreshPage) {
       window.location.reload();
     } else {
@@ -104,24 +104,10 @@ var currentDateTime = () => {
 // I want to create 8 1 hour time blocks (dynamically probably)/or maybe preset - with dynamic class changing LINKED to the moment
 
 // let time = moment().format("h:mm:ss");
-// to local storage
-var saveEntry = (time, input) => {
-  // unhide you have saved your entry
-  savedPlanEntries.push({
-    time: time,
-    event: input,
-  });
-  localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
-};
+
 
 // and edit local storage
 var editEntry = () => {};
-
-// clear local storage + current entries + warning of Are you sure? You can not get these back.
-var clearLocalStorage = () => {
-  savedPlanEntries = [];
-  localStorage.setItem("savedPlanEntries", savedPlanEntries);
-};
 
 var clearEvent = (index) => {
   // replace 1 entry, at the specified index, which is from the target in the array
@@ -172,12 +158,39 @@ var createSavedEntries = () => {
   }
 };
 
-var createTimeSlots = () => {
-  // var createTimeslots = $("<section class=entry-boxes id=entryBox></section>")
+// to local storage
+var saveEntry = (time, input) => {
+    // push entries with these details
+    savedPlanEntries.push({
+      time: time,
+      event: input,
+    });
+    localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
+  };
+  
+  var saveAllEntries = (time, input) => {
+    
+    savedPlanEntries.push({
+          time: time,
+          event: input,
+      });
+      localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
+  };
+
+//   clear all onclick functions: TODO
+$("#clearAllButton").on("click",function(){
+    clearAllEvents();    
+})
+
+// clear local storage + current entries + warning of Are you sure? You can not get these back.
+var clearLocalStorage = () => {
+    savedPlanEntries = [];
+    localStorage.setItem("savedPlanEntries", savedPlanEntries);
+  };
+
+var clearAllEvents = () => {
+    clearLocalStorage();
+    timeblocks.find("textarea").val("");
+    timeblocks.find("button").attr("data-event", "none");
+    scheduleArray = [];
 };
-
-// allow access to COLOUR CODED future time slots
-var openAvailableTimeSlots = () => {};
-
-// highlight (maybe slight hover + colour change) or currently active hour
-var highlightPresentTimeSlot = () => {};

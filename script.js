@@ -3,13 +3,14 @@ var timeblocks = $("#timeblocks");
 var time = moment().format()("h:mm:ss");
 
 $(document).ready(refreshPageOnHour)
-    
+createScheduleTimeBlocks();
+
 var refreshPageOnHour = () =>{
     // split at : creating array [h, mm, ss]
     var splitTimeIntoArr = time.split(":");
-    var minutesUntilRefresh = 59 - parseInt(splitTimeIntoArr[1]);
-    var secondsUntilRefresh = 60 - parseInt(splitTimeIntoArr[2]);
-    var totalTimeUntilRefresh = minutesUntilRefresh*60 + secondsUntilRefresh;
+    const minutesUntilRefresh = 59 - parseInt(splitTimeIntoArr[1]);
+    const secondsUntilRefresh = 60 - parseInt(splitTimeIntoArr[2]);
+    const totalTimeUntilRefresh = minutesUntilRefresh*60 + secondsUntilRefresh;
     var secondsPassed = 0;
     
     let timeUntilRefresh = setInterval(() => {
@@ -28,7 +29,37 @@ var refreshPageOnHour = () =>{
     
 };
 
-// incase i need to initialise moment.js
+// building the timeblocks - from an array - built from the moment.js time ?
+let dayPlannerTimes = ["9am","10am","11am","12pm","1pm","2pm","3pm","4pm","5pm"];
+
+// hour9 to hour17
+
+var createScheduleTimeBlocks = () => {
+    for (i=0;i<dayPlannerTimes.length;i++){
+        let newFormElement = $('<form>');
+        let newSectionRow = $('<section>');
+        let newParagraphLabel = $('<p>');
+        let newTextInput = $('<textarea>');
+        
+        newFormElement.attr({
+            class: "time-block",
+            id: dayPlannerTimes[i]
+        });
+        newSectionRow.attr("class", "row");
+        newParagraphLabel.attr("class","hourLabel col-2");
+        newTextInput.attr({
+            class: "col-9 description",
+            id: "inlineFormInput"
+        });
+
+        timeblocks.appendTo(newFormElement);
+        newFormElement.append(newSectionRow);
+        newSectionRow.append(newParagraphLabel);
+        newSectionRow.append(newTextInput);
+    }    
+};
+
+
 var currentDateTime = () => {
 
 };

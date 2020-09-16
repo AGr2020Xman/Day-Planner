@@ -1,12 +1,15 @@
 $(document).ready(function () {
   refreshPageOnHour();
+  currentDateTime();
   createScheduleTimeBlocks();
+  getSavedEntries();
 });
 
 let currentDay = $("#currentDay");
 let timeblocks = $("#timeblocks");
 let time = moment().format("h:mm:ss");
 
+// TODO: EDIT THE CONFIRMATION/ALERT ZONE
 var refreshPageOnHour = () => {
   // split at : creating array [h, mm, ss]
   var splitTimeIntoArr = time.split(":");
@@ -17,21 +20,25 @@ var refreshPageOnHour = () => {
 
   let timeUntilRefresh = setInterval(() => {
     secondsPassed++;
-    if (secondsPassed === totalTimeUntilRefresh) {
-      // fallback on confirm if all else fails
-      var refreshPage = $().text(
-        "It's a new hour. DO you want to reload your planner to reflect changes?"
-      );
-      if (refreshPage) {
-        window.location.reload();
-      } else {
-        // fallback on alert if all else fails
-        $().text(
-          "Automatic refresh is now disabled. It will re-enable once you refresh the page manually."
-        );
-      }
-    }
+    showAndHideCard();
   }, 1000);
+};
+
+var showAndHideCard = () => {
+  if (secondsPassed === totalTimeUntilRefresh) {
+    // fallback on confirm if all else fails
+    var refreshPage = $().text(
+      "It's a new hour. DO you want to reload your planner to reflect changes?"
+    );
+    if (refreshPage) {
+      window.location.reload();
+    } else {
+      // fallback on alert if all else fails
+      $().text(
+        "Automatic refresh is now disabled. It will re-enable once you refresh the page manually."
+      );
+    }
+  }
 };
 
 // building the timeblocks - from an array - built from the moment.js time ?
@@ -56,25 +63,27 @@ var createScheduleTimeBlocks = () => {
     let newParagraphLabel = $("<p>");
     let newTextInput = $("<textarea>");
 
-    newFormElement.attr({
+    newFormElement = newFormElement.attr({
       class: "time-block",
       id: dayPlannerTimes[i],
     });
-    newSectionRow.attr("class", "row");
-    newParagraphLabel.attr("class", "hourLabel col-2");
-    newTextInput.attr({
+    newSectionRow = newSectionRow.attr("class", "row");
+    newParagraphLabel = newParagraphLabel.attr("class", "hourLabel col-2");
+    newTextInput = newTextInput.attr({
       class: "col-9 description",
       id: "inlineFormInput",
     });
 
-    timeblocks.appendTo(newFormElement);
+    timeblocks.append(newFormElement);
     newFormElement.append(newSectionRow);
     newSectionRow.append(newParagraphLabel);
     newSectionRow.append(newTextInput);
   }
 };
 
-var currentDateTime = () => {};
+var currentDateTime = () => {
+  currentDay.text(moment().format("dddd, MMMM Do"));
+};
 
 // open dayplanner - top of page - Current Date/Year
 // day planner organised in 1 hour blocks starting @ 9am - ending @ 5pm

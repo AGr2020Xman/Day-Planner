@@ -1,4 +1,4 @@
-// TODO: save all function, clear all function, change event+live local storage function (editEntry), 
+// TODO: save all function, clear all function, change event+live local storage function (editEntry),
 
 $(document).ready(function () {
   refreshPageOnHour();
@@ -26,15 +26,17 @@ var refreshPageOnHour = () => {
   }, 1000);
 };
 
-var showAndHideCard = () => {
+var showAndHideRefreshModal = () => {
   if (secondsPassed === totalTimeUntilRefresh) {
     // fallback on confirm if all else fails
-    var refreshPage = ;
-    if (refreshPage) {
-      window.location.reload();
-    } else {
-      // fallback on alert if all else fails
-      $().text(
+    $("#automaticRefreshModal").modal("show");
+    $("#saveAllButton").on('click', function(){
+        $("#automaticRefreshModal").modal("hide");
+        window.location.reload();
+    })
+} else if {
+    $("cancelRefresh").on('click')
+    $("#pageRefreshDisabled").toast()
         "Automatic refresh is now disabled. It will re-enable once you refresh the page manually."
       );
     }
@@ -105,7 +107,6 @@ var currentDateTime = () => {
 
 // let time = moment().format("h:mm:ss");
 
-
 // and edit local storage
 var editEntry = () => {};
 
@@ -120,7 +121,7 @@ var clearEvent = (index) => {
 let savedPlanEntries;
 let scheduleArray = [];
 
-$(".time-block").delegate("button");
+// $(".time-block").delegate("button");
 
 var populateSavedEntries = () => {
   getSavedEntries();
@@ -144,6 +145,7 @@ var getSavedEntries = () => {
   }
 };
 
+// untested - however should function correctly
 var createSavedEntries = () => {
   for (i = 0; i < scheduleArray.length; i++) {
     var scheduleBlockElementID = "#" + scheduleArray[i];
@@ -158,39 +160,41 @@ var createSavedEntries = () => {
   }
 };
 
-// to local storage
+// to local storage - functions
 var saveEntry = (time, input) => {
-    // push entries with these details
-    savedPlanEntries.push({
-      time: time,
-      event: input,
-    });
-    localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
-  };
-  
-  var saveAllEntries = (time, input) => {
-    
-    savedPlanEntries.push({
-          time: time,
-          event: input,
-      });
-      localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
-  };
+  // push entries with these details
+  savedPlanEntries.push({
+    time: time,
+    event: input,
+  });
+  localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
+};
+
+
+// not yet functional
+var saveAllEntries = (time, input) => {
+  (savedPlanEntries.push({
+    time: time,
+    event: input,
+  });
+  localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
+};
 
 //   clear all onclick functions: TODO
-$("#clearAllButton").on("click",function(){
-    clearAllEvents();    
-})
+$("#clearAllButton").on("click", function () {
+  clearAllEvents();
+  $("#clearAllEntriesModal").modal("hide");
+});
 
 // clear local storage + current entries + warning of Are you sure? You can not get these back.
 var clearLocalStorage = () => {
-    savedPlanEntries = [];
-    localStorage.setItem("savedPlanEntries", savedPlanEntries);
-  };
+  savedPlanEntries = [];
+  localStorage.setItem("savedPlanEntries", savedPlanEntries);
+};
 
 var clearAllEvents = () => {
-    clearLocalStorage();
-    timeblocks.find("textarea").val("");
-    timeblocks.find("button").attr("data-event", "none");
-    scheduleArray = [];
+  clearLocalStorage();
+  timeblocks.find("textarea").val("");
+  timeblocks.find("button").attr("data-event", "none");
+  scheduleArray = [];
 };

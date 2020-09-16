@@ -1,13 +1,36 @@
-var previousEntries = [{}];
-var now = moment();
 var currentDay = $('#currentDay')
-
-
 var timeblocks = $("#timeblocks");
+var time = moment().format()("h:mm:ss");
+
+$(document).ready(refreshPageOnHour)
+    
+var refreshPageOnHour = () =>{
+    // split at : creating array [h, mm, ss]
+    var splitTimeIntoArr = time.split(":");
+    var minutesUntilRefresh = 59 - parseInt(splitTimeIntoArr[1]);
+    var secondsUntilRefresh = 60 - parseInt(splitTimeIntoArr[2]);
+    var totalTimeUntilRefresh = minutesUntilRefresh*60 + secondsUntilRefresh;
+    var secondsPassed = 0;
+    
+    let timeUntilRefresh = setInterval(() => {
+        secondsPassed++;
+        if (secondsPassed === totalTimeUntilRefresh){
+            // fallback on confirm if all else fails
+            var refreshPage = $().text("It's a new hour. DO you want to reload your planner to reflect changes?");
+            if (refreshPage) {
+                window.location.reload();
+            } else {
+                // fallback on alert if all else fails
+                $().text("Automatic refresh is now disabled. It will re-enable once you refresh the page manually.")
+            }
+        }        
+    }, 1000);
+    
+};
 
 // incase i need to initialise moment.js
 var currentDateTime = () => {
-    
+
 };
 
 
@@ -18,9 +41,8 @@ var currentDateTime = () => {
 // future times will be green and normal sized
 
 // I want to create 8 1 hour time blocks (dynamically probably)/or maybe preset - with dynamic class changing LINKED to the moment
-var time = moment().format()("h:mm:ss");
 
-var 
+
 
 // to local storage
 var saveEntry = (time, input) => {
@@ -38,10 +60,20 @@ var editEntry = () => {
 };
 
 // clear local storage + current entries + warning of Are you sure? You can not get these back.
-var clearAllEntries = () => {
-    
+var clearLocalStorage = () => {
+    savedPlanEntries = [];
+    localStorage.setItem("savedPlanEntries", savedPlanEntries)    
 };
 
+
+var clearEvent = (index) => {
+    // replace 1 entry, at the specified index, which is from the target in the array
+    scheduleArray.splice([index],1)
+    // replaced 1 entry, at the specified index, again from the targeted saved entry - in the array
+    savedPlanEntries.splice([index],1)
+};
+
+// globals used in multiple functions
 let savedPlanEntries;
 let scheduleArray = [];
 
@@ -52,13 +84,15 @@ var populateSavedEntries = () =>{
 // retrive local storage
 var getSavedEntries = () => {
     scheduleArray = [];
-    // value of var set
+    // value of var set to = whats in the local storage
     savedPlanEntries = localStorage.getItem("savedPlanEntries");
+    // if storage is blank or empty, reset array
     if (savedPlanEntries === null || savedPlanEntries === ""){
         scheduleArray = [];
     } else {
+        // else saved entries = itself parsed to be in a manipulatable format
         savedPlanEntries = JSON.parse(savedPlanEntries); 
-        
+        // for each entry, push the retrieved data to the local scheduleArray, with it's assosciated time
         for (i=0; i<savedPlanEntries.length; i++) {
             scheduleArray.push(savedPlanEntries[i].time); 
         }

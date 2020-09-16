@@ -62,22 +62,32 @@ var createScheduleTimeBlocks = () => {
     let newSectionRow = $("<section>");
     let newParagraphLabel = $("<p>");
     let newTextInput = $("<textarea>");
+    let newSaveButton = $("<button>");
+    let iconSave = $("<i>");
 
     newFormElement = newFormElement.attr({
       class: "time-block",
       id: dayPlannerTimes[i],
     });
     newSectionRow = newSectionRow.attr("class", "row");
-    newParagraphLabel = newParagraphLabel.attr("class", "hourLabel col-2");
+    newParagraphLabel = newParagraphLabel.attr("class", "hour col-2");
     newTextInput = newTextInput.attr({
       class: "col-9 description",
       id: "inlineFormInput",
     });
+    newSaveButton = newSaveButton.attr({
+      type: "submit",
+      "data-event": "none",
+      class: "col-2 savebutton",
+    });
+    iconSave = iconSave.attr("class", "save-size fa-save");
 
     timeblocks.append(newFormElement);
     newFormElement.append(newSectionRow);
     newSectionRow.append(newParagraphLabel);
     newSectionRow.append(newTextInput);
+    newSaveButton.append(iconSave);
+    newSectionRow.append(newSaveButton);
   }
 };
 
@@ -93,6 +103,7 @@ var currentDateTime = () => {
 
 // I want to create 8 1 hour time blocks (dynamically probably)/or maybe preset - with dynamic class changing LINKED to the moment
 
+// let time = moment().format("h:mm:ss");
 // to local storage
 var saveEntry = (time, input) => {
   // unhide you have saved your entry
@@ -122,6 +133,8 @@ var clearEvent = (index) => {
 // globals used in multiple functions
 let savedPlanEntries;
 let scheduleArray = [];
+
+$(".time-block").delegate("button");
 
 var populateSavedEntries = () => {
   getSavedEntries();
@@ -162,9 +175,6 @@ var createSavedEntries = () => {
 var createTimeSlots = () => {
   // var createTimeslots = $("<section class=entry-boxes id=entryBox></section>")
 };
-
-// do not allow tampering with times in the past
-var lockPreviousTimeSlots = () => {};
 
 // allow access to COLOUR CODED future time slots
 var openAvailableTimeSlots = () => {};

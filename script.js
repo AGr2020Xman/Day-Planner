@@ -82,8 +82,9 @@ var createScheduleTimeBlocks = () => {
     let newParagraphLabel = $("<p>");
     let newTextInput = $("<textarea>");
     let newSaveButton = $("<button>");
+    let newDeleteButton = $("<button>");
     let iconSave = $("<i>");
-    let timeblockTitle = $("#hourTitle");
+    let iconDelete = $("<i>");
 
     // dataid or something unique
     // timeblockTitle.text(dayPlannerTimes[i]);
@@ -98,20 +99,26 @@ var createScheduleTimeBlocks = () => {
     });
     newParagraphLabel.html(dayPlannerTimes[i]);
     newTextInput = newTextInput.attr({
-      class: "col-9 description",
+      class: "col-6 description",
       id: "inlineFormInput",
     });
     newSaveButton = newSaveButton.attr({
       type: "submit",
       "data-event": "none",
-      class: "col-2 savebutton",
+      class: "col-2 savebutton btn align-middle",
+    });
+    newDeleteButton = newDeleteButton.attr({
+      type: "submit",
+      "data-event": "none",
+      class: "col-2 deletebutton btn align-middle",
     });
 
     newSaveButton.click(function (event) {
       saveSingleEntry(event);
     });
 
-    iconSave = iconSave.attr("class", "save-size fa-save");
+    iconSave = iconSave.attr("class", "save-size far fa-save fa-2x");
+    iconDelete = iconDelete.attr("class", "save-size far fa-trash fa-2x");
 
     timeblocks.append(newFormElement);
     newFormElement.append(newSectionRow);
@@ -119,28 +126,14 @@ var createScheduleTimeBlocks = () => {
     newSectionRow.append(newTextInput);
     newSaveButton.append(iconSave);
     newSectionRow.append(newSaveButton);
+    newDeleteButton.append(iconDelete);
+    newSectionRow.append(newDeleteButton);
   }
-};
-
-// legacy code to set static date time
-// var currentDateTime = () => {
-//   currentDay.text(moment().format("dddd Do MMMM YYYY, HH:mm"));
-// };
-
-// and edit local storage
-var editEntry = () => {};
-
-var clearEvent = (index) => {
-  // replace 1 entry, at the specified index, which is from the target in the array
-  scheduleObject.splice([index], 1);
-  // replaced 1 entry, at the specified index, again from the targeted saved entry - in the array
-  savedPlanEntries.splice([index], 1);
 };
 
 // globals used in multiple functions
 let savedPlanEntries;
 // savedplanentries {9am: Brekafast}
-let scheduleObject = {};
 
 // $(".time-block").delegate("button");
 
@@ -157,8 +150,8 @@ var getSavedEntries = () => {
   // for each entry, push the retrieved data to the local scheduleArray, with it's assosciated time
   Object.keys(savedPlanEntries).forEach((element) => {
     //get the timeblock ID (9am/10am/11am) which is the element
+    // access the textarea + update the .val()
     $("#" + element)
-      // access the textarea + update the .val()
       .find("textarea")
       .val(savedPlanEntries[element]);
   });
@@ -186,6 +179,10 @@ $("#clearAllButton").click(function () {
   $("#clearAllEntriesModal").modal("hide");
 });
 
+$("#clearSingleEntry").click(function () {
+  clearSingleEntry();
+});
+
 // clear local storage + current entries + warning of Are you sure? You can not get these back.
 var clearLocalStorage = () => {
   savedPlanEntries = {};
@@ -197,4 +194,17 @@ var clearAllEvents = () => {
   timeblocks.find("textarea").val("");
   timeblocks.find("button").attr("data-event", "none");
   scheduleObject = {};
+};
+
+var clearSingleEntry = (event) => {
+  event.preventDefault();
+  // replace 1 entry, at the specified index, which is from the target in the array
+  currentSaved = Object.keys(savedPlanEntries);
+  if ($(this).closest("form").attr("id") === $("form").attr("id")) {
+    this.find("textarea").val("");
+  }
+  console.log(element);
+  console.log($("form").attr("id"));
+  // replaced 1 entry, at the specified index, again from the targeted saved entry - in the array
+  savedPlanEntries.splice([index], 1);
 };

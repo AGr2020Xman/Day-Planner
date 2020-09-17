@@ -75,4 +75,17 @@ textarea {
   width: 40px;
 }
 
+.deletebutton {
+  border-left: 1px solid black;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-color: #044e5f;
+  color: white;
+}
+
+.deletebutton i:hover {
+  font-size: 25px;
+  transition: all .3s ease-in-out;
+}
+
 .popOuts

@@ -116,6 +116,9 @@ var createScheduleTimeBlocks = () => {
     newSaveButton.click(function (event) {
       saveSingleEntry(event);
     });
+    newDeleteButton.click(function (event) {
+      clearSingleEntry(event);
+    });
 
     iconSave = iconSave.attr("class", "save-size far fa-save fa-2x");
     iconDelete = iconDelete.attr("class", "save-size far fa-trash fa-2x");
@@ -135,16 +138,12 @@ var createScheduleTimeBlocks = () => {
 let savedPlanEntries;
 // savedplanentries {9am: Brekafast}
 
-// $(".time-block").delegate("button");
-
 // retrive local storage
 var getSavedEntries = () => {
   // value of var set to = whats in the local storage
   savedPlanEntries = JSON.parse(localStorage.getItem("savedPlanEntries"));
   // if storage is blank or empty, reset array
-  console.log(savedPlanEntries);
   if (savedPlanEntries === null || !typeof savedPlanEntries === "object") {
-    console.log("this should not run");
     savedPlanEntries = {};
   }
   // for each entry, push the retrieved data to the local scheduleArray, with it's assosciated time
@@ -179,9 +178,8 @@ $("#clearAllButton").click(function () {
   $("#clearAllEntriesModal").modal("hide");
 });
 
-$("#clearSingleEntry").click(function () {
-  clearSingleEntry();
-});
+// FUTURE - add save ALL function
+// var saveAllEntries = () => {};
 
 // clear local storage + current entries + warning of Are you sure? You can not get these back.
 var clearLocalStorage = () => {
@@ -198,13 +196,24 @@ var clearAllEvents = () => {
 
 var clearSingleEntry = (event) => {
   event.preventDefault();
-  // replace 1 entry, at the specified index, which is from the target in the array
-  currentSaved = Object.keys(savedPlanEntries);
-  if ($(this).closest("form").attr("id") === $("form").attr("id")) {
-    this.find("textarea").val("");
+  // localStorage.removeItem()
+  // let timeblockEntry = $(event.target).closest("form").find("textarea").val();
+  // let timeblockEntryTime = $(event.target).closest("form").attr("id");
+  var currentSaved = Object.keys(savedPlanEntries);
+  var currentText = $(event.target).closest("form").find("textarea");
+  var currentTimeId = $(event.target).closest("form").attr("id");
+
+  for (i = 0; i < currentSaved.length; i++) {
+    if (currentSaved[i] === currentTimeId) {
+      currentText.val("");
+      saveSingleEntry(event);
+    }
   }
-  console.log(element);
-  console.log($("form").attr("id"));
-  // replaced 1 entry, at the specified index, again from the targeted saved entry - in the array
-  savedPlanEntries.splice([index], 1);
 };
+
+// Object.keys(savedPlanEntries).forEach((element) => {
+//   //get the timeblock ID (9am/10am/11am) which is the element
+//   // access the textarea + update the .val()
+//   $("#" + element)
+//     .find("textarea")
+//     .val(savedPlanEntries[element]);

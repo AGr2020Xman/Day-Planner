@@ -1,47 +1,46 @@
-// TODO: save all function, clear all function, change event+live local storage function (editEntry),
-
-$(document).ready(function () {
-  refreshPageOnHour();
-  currentDateTime();
-  setCurrentDateTime();
-  createScheduleTimeBlocks();
-  // populateSavedEntries();
-  getSavedEntries();
-});
-
 let currentDay = $("#currentDay");
 let timeblocks = $("#timeblocks");
-let time = moment().format("h:mm:ss");
 
-// TODO: EDIT THE CONFIRMATION/ALERT ZONE
-var refreshPageOnHour = () => {
-  // split at : creating array [h, mm, ss]
+// TODO: save all function, clear all function, change event+live local storage function (editEntry),
+$(document).ready(function () {
+  let time = moment().format("h:mm:ss");
   var splitTimeIntoArr = time.split(":");
   const minutesUntilRefresh = 59 - parseInt(splitTimeIntoArr[1]);
   const secondsUntilRefresh = 60 - parseInt(splitTimeIntoArr[2]);
   const totalTimeUntilRefresh = minutesUntilRefresh * 60 + secondsUntilRefresh;
   var secondsPassed = 0;
+  var init = () =>
+    setInterval(function () {
+      secondsPassed++;
+      showAndHideRefreshModal();
+    }, 1000);
 
-  let timeUntilRefresh = setInterval(() => {
-    secondsPassed++;
-    // showAndHideRefreshModal();
-  }, 1000);
+  init();
+  currentDateTime();
+  setCurrentDateTime();
+  createScheduleTimeBlocks();
+  getSavedEntries();
+});
+
+// TODO: EDIT THE CONFIRMATION/ALERT ZONE
+
+$("#reloadPage").click(function () {
+  $("#automaticRefreshModal").modal("hide");
+  window.location.reload();
+});
+
+$("cancelRefresh").click(function () {
+  $("#pageRefreshDisabled").toast(
+    "Automatic refresh is now disabled. It will re-enable once you refresh the page manually."
+  );
+});
+
+var showAndHideRefreshModal = () => {
+  if (secondsPassed === totalTimeUntilRefresh) {
+    // fallback on confirm if all else fails
+    $("#automaticRefreshModal").modal("show");
+  }
 };
-
-// $("#saveAllButton").click(function() {
-//     $("#automaticRefreshModal").modal("hide");
-//     window.location.reload();
-// });
-
-// $("cancelRefresh").on('click' function() {
-//   $("#pageRefreshDisabled").toast("Automatic refresh is now disabled. It will re-enable once you refresh the page manually.")
-//   });
-
-// var showAndHideRefreshModal = () => {
-//   if (secondsPassed === totalTimeUntilRefresh) {
-//     // fallback on confirm if all else fails
-//     $("#automaticRefreshModal").modal("show");
-//   };
 
 // building the timeblocks - from an array - built from the moment.js time ?
 let dayPlannerTimes = [
@@ -79,6 +78,7 @@ var createScheduleTimeBlocks = () => {
       class: "hour col-2",
       id: "hourTitle",
     });
+    timeblockTitle = timeblockTitle.text(dayPlannerTimes[i]);
     newTextInput = newTextInput.attr({
       class: "col-9 description",
       id: "inlineFormInput",
@@ -140,14 +140,8 @@ let scheduleObject = {};
 
 // $(".time-block").delegate("button");
 
-var populateSavedEntries = () => {
-  // debugger;
-  getSavedEntries();
-  createSavedEntries();
-};
 // retrive local storage
 var getSavedEntries = () => {
-  // scheduleObject = {};
   // value of var set to = whats in the local storage
   savedPlanEntries = JSON.parse(localStorage.getItem("savedPlanEntries"));
   // if storage is blank or empty, reset array
@@ -158,33 +152,12 @@ var getSavedEntries = () => {
   }
   // for each entry, push the retrieved data to the local scheduleArray, with it's assosciated time
   Object.keys(savedPlanEntries).forEach((element) => {
+    //get the timeblock ID (9am/10am/11am) which is the element
     $("#" + element)
+      // access the textarea + update the .val()
       .find("textarea")
       .val(savedPlanEntries[element]);
-    //get the timeblock ID (9am/10am/11am) which is the element
-    // access the textarea + update the .val()
   });
-};
-
-// Object.keys(a);
-// // Array [ "9am", "10am" ]
-
-// a["9am"];
-// "thanks for this"
-
-// untested - however should function correctly
-var createSavedEntries = () => {
-  for (i = 0; i < dayPlannerTimes.length; i++) {
-    var scheduleBlockElementID = "#" + dayPlannerTimes[i];
-    var scheduleBlockElement = $(scheduleBlockElementID)
-      .children(".row")
-      .children("text-area");
-    $(scheduleBlockElementID)
-      .children(".row")
-      .children("button")
-      .attr("data-event", "true");
-    scheduleBlockElement.val(savedPlanEntries[dayPlannerTimes[i]]);
-  }
 };
 
 // functions properly

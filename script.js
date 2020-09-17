@@ -111,27 +111,38 @@ var createScheduleTimeBlocks = () => {
     });
 
     let timeNow = moment().format("hA");
-    let scheduledBlocksAll = $(".time-block");
 
-    scheduledBlocksAll.each(function (index) {
-      let timeBlockId = $(scheduledBlocksAll[index]).attr("id");
-      let timeBlockText = $(scheduledBlocksAll[index])
-        .children(".row")
-        .children("textarea");
-      if (timeBlockId === timeNow) {
-        timeBlockText.addClass("present");
-        timeBlockText.removeClass("future");
-        timeBlockText.removeClass("past");
-      } else if (moment(timeBlockId, "hA").isBefore()) {
-        timeBlockText.addClass("past");
-        timeBlockText.removeClass("future");
-        timeBlockText.removeClass("present");
-      } else if (moment(timeBlockId, "hA").isAfter()) {
-        timeBlockText.addClass("future");
-        timeBlockText.removeClass("present");
-        timeBlockText.removeClass("past");
+    $(".time-block").each(function (index, value) {
+      if (index === timeNow) {
+        $(value).addClass("present");
+      } else if (moment(index, "hA").isBefore()) {
+        $(value).addClass("past");
+      } else if (moment(index, "hA").isAfter()) {
+        $(value).addClass("future");
       }
+      // Or $(this).css("background-color", "purple");
     });
+
+    // let scheduledBlocksAll = $(".time-block");
+    // scheduledBlocksAll.each(function (index) {
+    //   let timeBlockId = $(scheduledBlocksAll[index]).attr("id");
+    //   let timeBlockText = $(scheduledBlocksAll[index])
+    //     .children(".row")
+    //     .children("textarea");
+    //   if (timeBlockId === timeNow) {
+    //     timeBlockText.addClass("present");
+    //     timeBlockText.removeClass("future");
+    //     timeBlockText.removeClass("past");
+    //   } else if (moment(timeBlockId, "hA").isBefore()) {
+    //     timeBlockText.addClass("past");
+    //     timeBlockText.removeClass("future");
+    //     timeBlockText.removeClass("present");
+    //   } else if (moment(timeBlockId, "hA").isAfter()) {
+    //     timeBlockText.addClass("future");
+    //     timeBlockText.removeClass("present");
+    //     timeBlockText.removeClass("past");
+    //   }
+    // });
 
     // for (let i = 0; i < scheduledBlocksAll.length; i++) {
     //   let timeblock = $(scheduledBlocksAll[i]);

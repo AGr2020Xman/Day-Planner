@@ -40,6 +40,10 @@ textarea {
   border-radius: 10px;
 }
 
+#timeblocks {
+  border: 5px dotted black;
+}
+
 .row {
   white-space: pre-wrap;
   height: 80px;

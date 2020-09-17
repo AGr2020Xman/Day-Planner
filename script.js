@@ -127,12 +127,13 @@ var createScheduleTimeBlocks = () => {
 
   $(".time-block").each(function (index, value) {
     // debugger;
-    if (moment(dayPlannerTimes[index], "hA") === timeNow) {
-      $(value).addClass("present");
+    console.log(dayPlannerTimes[index], timeNow.toLowerCase());
+    if (dayPlannerTimes[index] === timeNow.toLowerCase()) {
+      $(this).addClass("present");
     } else if (moment(dayPlannerTimes[index], "hA").isBefore(timeNow, "hour")) {
-      $(value).addClass("past");
+      $(this).addClsas("past");
     } else if (moment(dayPlannerTimes[index], "hA").isAfter(timeNow, "hour")) {
-      $(value).addClass("future");
+      $(this).addClass("future");
     }
   });
 };

@@ -1,6 +1,3 @@
-let currentDay = $("#currentDay");
-let timeblocks = $("#timeblocks");
-
 // TODO: save all function, clear all function, change event+live local storage function (editEntry),
 $(document).ready(function () {
   let time = moment().format("h:mm:ss");
@@ -9,18 +6,46 @@ $(document).ready(function () {
   const secondsUntilRefresh = 60 - parseInt(splitTimeIntoArr[2]);
   const totalTimeUntilRefresh = minutesUntilRefresh * 60 + secondsUntilRefresh;
   var secondsPassed = 0;
-  var init = () =>
-    setInterval(function () {
-      secondsPassed++;
-      showAndHideRefreshModal();
-    }, 1000);
 
-  init();
+  let timeUntilRefresh = setInterval(function () {
+    secondsPassed++;
+    if (secondsPassed === totalTimeUntilRefresh) {
+      $("#automaticRefreshModal").modal("show");
+    }
+  }, 1000);
+
   currentDateTime();
   setCurrentDateTime();
   createScheduleTimeBlocks();
   getSavedEntries();
 });
+
+// var init = () => {
+//   setInterval(function () {
+//     var secondsPassed = 0;
+//     secondsPassed++;
+//     if (secondsPassed === totalTimeUntilRefresh) {
+//       $("#automaticRefreshModal").modal("show");
+//     }
+//   }, 1000);
+// };
+
+let currentDay = $("#currentDay");
+let timeblocks = $("#timeblocks");
+
+// updated functions to set dynamic date/time - updated on an interval
+var displayDateTime;
+
+var currentDateTime = () => {
+  var now = moment();
+  displayDateTime = now.clone();
+  setInterval(currentDateTime, 1000);
+};
+var setCurrentDateTime = () => {
+  var jumbotronHeadTime = moment().format("dddd Do MMMM YYYY, HH:mm");
+  currentDay.html(jumbotronHeadTime);
+  setInterval(setCurrentDateTime, 1000);
+};
 
 // TODO: EDIT THE CONFIRMATION/ALERT ZONE
 
@@ -35,12 +60,7 @@ $("cancelRefresh").click(function () {
   );
 });
 
-var showAndHideRefreshModal = () => {
-  if (secondsPassed === totalTimeUntilRefresh) {
-    // fallback on confirm if all else fails
-    $("#automaticRefreshModal").modal("show");
-  }
-};
+var showAndHideRefreshModal = () => {};
 
 // building the timeblocks - from an array - built from the moment.js time ?
 let dayPlannerTimes = [
@@ -78,7 +98,6 @@ var createScheduleTimeBlocks = () => {
       class: "hour col-2",
       id: "hourTitle",
     });
-    timeblockTitle = timeblockTitle.text(dayPlannerTimes[i]);
     newTextInput = newTextInput.attr({
       class: "col-9 description",
       id: "inlineFormInput",
@@ -108,20 +127,6 @@ var createScheduleTimeBlocks = () => {
 // var currentDateTime = () => {
 //   currentDay.text(moment().format("dddd Do MMMM YYYY, HH:mm"));
 // };
-
-// updated functions to set dynamic date/time - updated on an interval
-var displayDateTime;
-
-var currentDateTime = () => {
-  var now = moment();
-  displayDateTime = now.clone();
-  setInterval(currentDateTime, 1000);
-};
-var setCurrentDateTime = () => {
-  var jumbotronHeadTime = moment().format("dddd Do MMMM YYYY, HH:mm");
-  currentDay.html(jumbotronHeadTime);
-  setInterval(setCurrentDateTime, 1000);
-};
 
 // and edit local storage
 var editEntry = () => {};

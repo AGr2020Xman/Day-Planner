@@ -5,10 +5,9 @@ $(document).ready(function () {
   currentDateTime();
   setCurrentDateTime();
   createScheduleTimeBlocks();
-  populateSavedEntries();
+  // populateSavedEntries();
+  getSavedEntries();
 });
-
-
 
 let currentDay = $("#currentDay");
 let timeblocks = $("#timeblocks");
@@ -148,20 +147,30 @@ var populateSavedEntries = () => {
 };
 // retrive local storage
 var getSavedEntries = () => {
-  scheduleObject = {};
+  // scheduleObject = {};
   // value of var set to = whats in the local storage
-  savedPlanEntries = localStorage.getItem("savedPlanEntries");
+  savedPlanEntries = JSON.parse(localStorage.getItem("savedPlanEntries"));
   // if storage is blank or empty, reset array
+  console.log(savedPlanEntries);
   if (savedPlanEntries === null || !typeof savedPlanEntries === "object") {
-    scheduleObject = {};
-  } 
-  savedPlanEntries = JSON.parse(savedPlanEntries);
-    // for each entry, push the retrieved data to the local scheduleArray, with it's assosciated time
-    for (i = 0; i < savedPlanEntries.length; i++) {
-      scheduleObject = {};
-    }
+    console.log("this should not run");
+    savedPlanEntries = {};
   }
+  // for each entry, push the retrieved data to the local scheduleArray, with it's assosciated time
+  Object.keys(savedPlanEntries).forEach((element) => {
+    $("#" + element)
+      .find("textarea")
+      .val(savedPlanEntries[element]);
+    //get the timeblock ID (9am/10am/11am) which is the element
+    // access the textarea + update the .val()
+  });
 };
+
+// Object.keys(a);
+// // Array [ "9am", "10am" ]
+
+// a["9am"];
+// "thanks for this"
 
 // untested - however should function correctly
 var createSavedEntries = () => {
@@ -178,14 +187,11 @@ var createSavedEntries = () => {
   }
 };
 
-// to local storage - functions
+// functions properly
 var saveSingleEntry = (event) => {
   event.preventDefault();
   let timeblockEntry = $(event.target).closest("form").find("textarea").val();
   let timeblockEntryTime = $(event.target).closest("form").attr("id");
-  if (timeblockEntry === "") {
-    return;
-  }
 
   // get entries from storage
   savedPlanEntries = JSON.parse(localStorage.getItem("savedPlanEntries"));

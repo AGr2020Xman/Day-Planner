@@ -60,8 +60,6 @@ $("cancelRefresh").click(function () {
   );
 });
 
-var showAndHideRefreshModal = () => {};
-
 // building the timeblocks - from an array - built from the moment.js time ?
 let dayPlannerTimes = [
   "9am",

@@ -20,20 +20,9 @@ $(document).ready(function () {
   getSavedEntries();
 });
 
-// var init = () => {
-//   setInterval(function () {
-//     var secondsPassed = 0;
-//     secondsPassed++;
-//     if (secondsPassed === totalTimeUntilRefresh) {
-//       $("#automaticRefreshModal").modal("show");
-//     }
-//   }, 1000);
-// };
-
+// updated functions to set dynamic date/time - updated on an interval
 let currentDay = $("#currentDay");
 let timeblocks = $("#timeblocks");
-
-// updated functions to set dynamic date/time - updated on an interval
 var displayDateTime;
 var now = moment();
 var jumbotronHeadTime = moment().format("dddd Do MMMM YYYY, HH:mm");
@@ -48,8 +37,7 @@ var setCurrentDateTime = () => {
   setInterval(setCurrentDateTime, 1000);
 };
 
-// TODO: EDIT THE CONFIRMATION/ALERT ZONE
-
+// onClicks
 $("#reloadPage").click(function () {
   $("#automaticRefreshModal").modal("hide");
   window.location.reload();
@@ -121,23 +109,25 @@ var createScheduleTimeBlocks = () => {
 
     let timeNow = moment().format("hA");
     let scheduledBlocksAll = $(".time-block");
-
-    for (i = 0; i < scheduledBlocksAll.length; i++) {
-      let timeblock = $(scheduledBlocksAll[i]);
-      let timeBlockId = timeblock.attr("id");
-      let timeBlockText = timeblock.children(".row").children("textarea");
-      if (timeBlockId === timeNow) {
-        timeBlockText.addClass("present");
-        timeBlockText.removeClass("future");
-        timeBlockText.removeClass("past");
-      } else if (moment(timeBlockId, "hA").isBefore()) {
-        timeBlockText.addClass("past");
-        timeBlockText.removeClass("future");
-        timeBlockText.removeClass("present");
-      } else if (moment(timeBlockId, "hA").isAfter()) {
-        timeBlockText.addClass("future");
-        timeBlockText.removeClass("present");
-        timeBlockText.removeClass("past");
+    for (let hour = 09; hour < 22; hour++) {
+      let hourValidate = moment(displayDateTime).hour(hour).minute(0);
+      for (i = 0; i < scheduledBlocksAll.length; i++) {
+        let timeblock = $(scheduledBlocksAll[i]);
+        let timeBlockId = timeblock.attr("id");
+        let timeBlockText = timeblock.children(".row").children("textarea");
+        if (hourValidate.isSame(displayDateTime, "hour")) {
+          timeBlockText.addClass("present");
+          timeBlockText.removeClass("future");
+          timeBlockText.removeClass("past");
+        } else if (hourValidate.isBefore(displayDateTime)) {
+          timeBlockText.addClass("past");
+          timeBlockText.removeClass("future");
+          timeBlockText.removeClass("present");
+        } else if (hourValidate.isAfter(displayDateTime)) {
+          timeBlockText.addClass("future");
+          timeBlockText.removeClass("present");
+          timeBlockText.removeClass("past");
+        }
       }
     }
 

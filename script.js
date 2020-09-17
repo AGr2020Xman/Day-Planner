@@ -126,14 +126,14 @@ var createScheduleTimeBlocks = () => {
   let timeNow = moment().format("hA");
 
   $(".time-block").each(function (index, value) {
-    if (index === timeNow) {
+    // debugger;
+    if (moment(dayPlannerTimes[index], "hA") === timeNow) {
       $(value).addClass("present");
-    } else if (moment(index, "hA").isBefore()) {
+    } else if (moment(dayPlannerTimes[index], "hA").isBefore(timeNow, "hour")) {
       $(value).addClass("past");
-    } else if (moment(index, "hA").isAfter()) {
+    } else if (moment(dayPlannerTimes[index], "hA").isAfter(timeNow, "hour")) {
       $(value).addClass("future");
     }
-    // Or $(this).css("background-color", "purple");
   });
 };
 

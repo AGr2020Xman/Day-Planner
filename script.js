@@ -5,8 +5,10 @@ $(document).ready(function () {
   currentDateTime();
   setCurrentDateTime();
   createScheduleTimeBlocks();
-  getSavedEntries();
+  populateSavedEntries();
 });
+
+
 
 let currentDay = $("#currentDay");
 let timeblocks = $("#timeblocks");
@@ -110,6 +112,7 @@ var createScheduleTimeBlocks = () => {
 
 // updated functions to set dynamic date/time - updated on an interval
 var displayDateTime;
+
 var currentDateTime = () => {
   var now = moment();
   displayDateTime = now.clone();
@@ -139,6 +142,7 @@ let scheduleObject = {};
 // $(".time-block").delegate("button");
 
 var populateSavedEntries = () => {
+  // debugger;
   getSavedEntries();
   createSavedEntries();
 };
@@ -148,14 +152,13 @@ var getSavedEntries = () => {
   // value of var set to = whats in the local storage
   savedPlanEntries = localStorage.getItem("savedPlanEntries");
   // if storage is blank or empty, reset array
-  if (savedPlanEntries === null || savedPlanEntries === "") {
+  if (savedPlanEntries === null || !typeof savedPlanEntries === "object") {
     scheduleObject = {};
-  } else {
-    // else saved entries = itself parsed to be in a manipulatable format
-    savedPlanEntries = JSON.parse(savedPlanEntries);
+  } 
+  savedPlanEntries = JSON.parse(savedPlanEntries);
     // for each entry, push the retrieved data to the local scheduleArray, with it's assosciated time
     for (i = 0; i < savedPlanEntries.length; i++) {
-      scheduleObject.push(savedPlanEntries[i].time);
+      scheduleObject = {};
     }
   }
 };
@@ -183,14 +186,6 @@ var saveSingleEntry = (event) => {
   if (timeblockEntry === "") {
     return;
   }
-
-  // {} initial state - empty day planner
-  // {"9am":"Breakfast"}
-  // {"9am":"Breakfast",
-  // "10am:"Meeting"}
-
-  // {"time": "entry","time": "entry"}
-  //
 
   // get entries from storage
   savedPlanEntries = JSON.parse(localStorage.getItem("savedPlanEntries"));

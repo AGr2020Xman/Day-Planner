@@ -110,11 +110,11 @@ var createScheduleTimeBlocks = () => {
     let timeNow = moment().format("hA");
     let scheduledBlocksAll = $(".time-block");
 
-    for (i = 0; i < scheduledBlocksAll.length; i++) {
+    for (let i = 0; i < scheduledBlocksAll.length; i++) {
       let timeblock = $(scheduledBlocksAll[i]);
       let timeBlockId = timeblock.attr("id");
       let timeBlockText = timeblock.children(".row").children("textarea");
-      if (timeBlockId == timeNow) {
+      if (timeBlockId === timeNow) {
         timeBlockText.addClass("present");
         timeBlockText.removeClass("future");
         timeBlockText.removeClass("past");

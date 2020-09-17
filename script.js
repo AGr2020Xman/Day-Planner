@@ -23,22 +23,23 @@ var refreshPageOnHour = () => {
 
   let timeUntilRefresh = setInterval(() => {
     secondsPassed++;
-    // showAndHideCard();
+    // showAndHideRefreshModal();
   }, 1000);
 };
+
+// $("#saveAllButton").click(function() {
+//     $("#automaticRefreshModal").modal("hide");
+//     window.location.reload();
+// });
+
+// $("cancelRefresh").on('click' function() {
+//   $("#pageRefreshDisabled").toast("Automatic refresh is now disabled. It will re-enable once you refresh the page manually.")
+//   });
 
 // var showAndHideRefreshModal = () => {
 //   if (secondsPassed === totalTimeUntilRefresh) {
 //     // fallback on confirm if all else fails
 //     $("#automaticRefreshModal").modal("show");
-//     $("#saveAllButton").on('click', function(){
-//         $("#automaticRefreshModal").modal("hide");
-//         window.location.reload();
-//     })
-// } else if {
-//     $("cancelRefresh").on('click' function() {
-//     $("#pageRefreshDisabled").toast("Automatic refresh is now disabled. It will re-enable once you refresh the page manually.")
-//     });
 //   };
 
 // building the timeblocks - from an array - built from the moment.js time ?
@@ -125,14 +126,15 @@ var editEntry = () => {};
 
 var clearEvent = (index) => {
   // replace 1 entry, at the specified index, which is from the target in the array
-  scheduleArray.splice([index], 1);
+  scheduleObject.splice([index], 1);
   // replaced 1 entry, at the specified index, again from the targeted saved entry - in the array
   savedPlanEntries.splice([index], 1);
 };
 
 // globals used in multiple functions
 let savedPlanEntries;
-let scheduleArray = [];
+// savedplanentries {9am: Brekafast}
+let scheduleObject = {};
 
 // $(".time-block").delegate("button");
 
@@ -142,26 +144,26 @@ var populateSavedEntries = () => {
 };
 // retrive local storage
 var getSavedEntries = () => {
-  scheduleArray = [];
+  scheduleObject = {};
   // value of var set to = whats in the local storage
   savedPlanEntries = localStorage.getItem("savedPlanEntries");
   // if storage is blank or empty, reset array
   if (savedPlanEntries === null || savedPlanEntries === "") {
-    scheduleArray = [];
+    scheduleObject = {};
   } else {
     // else saved entries = itself parsed to be in a manipulatable format
     savedPlanEntries = JSON.parse(savedPlanEntries);
     // for each entry, push the retrieved data to the local scheduleArray, with it's assosciated time
     for (i = 0; i < savedPlanEntries.length; i++) {
-      scheduleArray.push(savedPlanEntries[i].time);
+      scheduleObject.push(savedPlanEntries[i].time);
     }
   }
 };
 
 // untested - however should function correctly
 var createSavedEntries = () => {
-  for (i = 0; i < scheduleArray.length; i++) {
-    var scheduleBlockElementID = "#" + scheduleArray[i];
+  for (i = 0; i < dayPlannerTimes.length; i++) {
+    var scheduleBlockElementID = "#" + dayPlannerTimes[i];
     var scheduleBlockElement = $(scheduleBlockElementID)
       .children(".row")
       .children("text-area");
@@ -169,42 +171,35 @@ var createSavedEntries = () => {
       .children(".row")
       .children("button")
       .attr("data-event", "true");
-    scheduleBlockElement.val(savedPlanEntries[i].event);
+    scheduleBlockElement.val(savedPlanEntries[dayPlannerTimes[i]]);
   }
 };
 
 // to local storage - functions
 var saveSingleEntry = (event) => {
-  debugger;
   event.preventDefault();
-  let timeblockEvent = $(event.target).closest("form").find("textarea").val();
-  let timeblockEventTime = $(event.target).closest("form").attr("id");
-  if (timeblockEvent === "") {
+  let timeblockEntry = $(event.target).closest("form").find("textarea").val();
+  let timeblockEntryTime = $(event.target).closest("form").attr("id");
+  if (timeblockEntry === "") {
     return;
   }
 
-  let newTimeblockEntry = {
-    Entry: timeblockEvent,
-    Timeslot: timeblockEventTime,
-  };
+  // {} initial state - empty day planner
+  // {"9am":"Breakfast"}
+  // {"9am":"Breakfast",
+  // "10am:"Meeting"}
 
-  savedPlanEntries = [];
-  savedPlanEntries.push(
-    JSON.parse(
-      localStorage.setItem(
-        "savedPlanEntries",
-        JSON.stringify(newTimeblockEntry)
-      )
-    )
-  );
-  // savedPlanEntries = JSON.parse(localStorage.getItem("savedPlanEntries"));
-  // if (savedPlanEntries === null) {
-  //   savedPlanEntries = [];
-  // } else {
+  // {"time": "entry","time": "entry"}
+  //
 
-  //   savedPlanEntries.push(newTimeblockEntry);
-  //   localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
-  // }
+  // get entries from storage
+  savedPlanEntries = JSON.parse(localStorage.getItem("savedPlanEntries"));
+  // if thats empty - create the savedPlanEntries array (initialise the state if there isn't one)
+  if (!typeof savedPlanEntries === "object" || savedPlanEntries === null) {
+    savedPlanEntries = {};
+  }
+  savedPlanEntries[timeblockEntryTime] = timeblockEntry;
+  localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
 };
 
 //   clear all onclick functions: TODO
@@ -215,13 +210,13 @@ $("#clearAllButton").click(function () {
 
 // clear local storage + current entries + warning of Are you sure? You can not get these back.
 var clearLocalStorage = () => {
-  savedPlanEntries = [];
-  localStorage.setItem("savedPlanEntries", savedPlanEntries);
+  savedPlanEntries = {};
+  localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
 };
 
 var clearAllEvents = () => {
   clearLocalStorage();
   timeblocks.find("textarea").val("");
   timeblocks.find("button").attr("data-event", "none");
-  scheduleArray = [];
+  scheduleObject = {};
 };

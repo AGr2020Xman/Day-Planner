@@ -110,24 +110,6 @@ var createScheduleTimeBlocks = () => {
       clearSingleEntry(event);
     });
 
-    let timeNow = moment().format("hA");
-
-    $(".time-block").each(function (index, value) {
-      if (index === timeNow) {
-        $(value).addClass("present");
-        $(value).removeClass("future");
-        $(value).removeClass("past");
-      } else if (moment(index, "hA").isBefore()) {
-        $(value).addClass("past");
-        $(value).removeClass("present");
-        $(value).removeClass("future");
-      } else if (moment(index, "hA").isAfter()) {
-        $(value).addClass("future");
-        $(value).removeClass("past");
-        $(value).removeClass("present");
-      }
-    });
-
     iconSave = iconSave.attr("class", "save-size fa fa-save fa-2x");
     iconDelete = iconDelete.attr("class", "save-size fa fa-trash fa-2x");
 
@@ -140,6 +122,19 @@ var createScheduleTimeBlocks = () => {
     newDeleteButton.append(iconDelete);
     newSectionRow.append(newDeleteButton);
   }
+
+  let timeNow = moment().format("hA");
+
+  $(".time-block").each(function (index, value) {
+    if (index === timeNow) {
+      $(value).addClass("present");
+    } else if (moment(index, "hA").isBefore()) {
+      $(value).addClass("past");
+    } else if (moment(index, "hA").isAfter()) {
+      $(value).addClass("future");
+    }
+    // Or $(this).css("background-color", "purple");
+  });
 };
 
 // globals used in multiple functions

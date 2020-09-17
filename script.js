@@ -85,8 +85,12 @@ var createScheduleTimeBlocks = () => {
       type: "submit",
       "data-event": "none",
       class: "col-2 savebutton",
-      id: "saveButtonId",
     });
+
+    newSaveButton.click(function (event) {
+      saveSingleEntry(event);
+    });
+
     iconSave = iconSave.attr("class", "save-size fa-save");
 
     timeblocks.append(newFormElement);
@@ -171,6 +175,7 @@ var createSavedEntries = () => {
 
 // to local storage - functions
 var saveSingleEntry = (event) => {
+  debugger;
   event.preventDefault();
   let timeblockEvent = $(event.target).closest("form").find("textarea").val();
   let timeblockEventTime = $(event.target).closest("form").attr("id");
@@ -180,32 +185,30 @@ var saveSingleEntry = (event) => {
 
   let newTimeblockEntry = {
     Entry: timeblockEvent,
-    Timeslot: timeblockEventTime
-  }:
-
-  savedPlanEntries = JSON.parse(localStorage.getItem('savedPlanEntries'));
-  if (savedPlanEntries === null) {
-    savedPlanEntries [];
-  } else {
-    savedPlanEntries.push(newTimeblockEntry);
-    localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
+    Timeslot: timeblockEventTime,
   };
 
-// not yet functional
-// var saveAllEntries = (time, input) => {
-//   for (i=0;i<)
+  savedPlanEntries = [];
+  savedPlanEntries.push(
+    JSON.parse(
+      localStorage.setItem(
+        "savedPlanEntries",
+        JSON.stringify(newTimeblockEntry)
+      )
+    )
+  );
+  // savedPlanEntries = JSON.parse(localStorage.getItem("savedPlanEntries"));
+  // if (savedPlanEntries === null) {
+  //   savedPlanEntries = [];
+  // } else {
 
-// savedPlanEntries.push({
-//   time: time,
-//   event: input,
-// });
-//   // localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
-// };
-
-$("#saveButtonId").click(saveSingleEntry);
+  //   savedPlanEntries.push(newTimeblockEntry);
+  //   localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
+  // }
+};
 
 //   clear all onclick functions: TODO
-$("#clearAllButton").on("click", function () {
+$("#clearAllButton").click(function () {
   clearAllEvents();
   $("#clearAllEntriesModal").modal("hide");
 });

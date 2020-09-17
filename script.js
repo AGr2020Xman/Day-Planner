@@ -77,7 +77,7 @@ var createScheduleTimeBlocks = () => {
     // timeblockTitle.text(dayPlannerTimes[i]);
     newFormElement = newFormElement.attr({
       class: "time-block",
-      label: "scheduledTimes"
+      label: "scheduledTimes",
       id: dayPlannerTimes[i],
     });
     newSectionRow = newSectionRow.attr("class", "row");

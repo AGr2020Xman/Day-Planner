@@ -22,7 +22,7 @@ $(document).ready(function () {
 
 // updated functions to set dynamic date/time - updated on an interval
 let currentDay = $("#currentDay");
-let timeblocks = $("timeblocks");
+let timeblocks = $("#timeblocks");
 var displayDateTime;
 var now = moment();
 var jumbotronHeadTime = moment().format("dddd Do MMMM YYYY, HH:mm");

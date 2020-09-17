@@ -125,14 +125,22 @@ var createScheduleTimeBlocks = () => {
 
   let timeNow = moment().format("hA");
   // difficult section - took many hours
-  $(".time-block").each(function (index) {
+  $(".time-block").each(function (index, value) {
     // debugger;
-    console.log(dayPlannerTimes[index], timeNow.toLowerCase());
+    let dayPlannerTime = parseInt(dayPlannerTimes[index]);
+    if (dayPlannerTime < 9) {
+      dayPlannerTime += 12;
+    }
+    let currentTime = parseInt(timeNow);
+    if (currentTime < 9) {
+      currentTime += 12;
+    }
+
     if (dayPlannerTimes[index] === timeNow.toLowerCase()) {
       $(this).addClass("present");
-    } else if (moment(dayPlannerTimes[index], "hA").isBefore(timeNow, "hour")) {
-      $(this).addClsas("past");
-    } else if (moment(dayPlannerTimes[index], "hA").isAfter(timeNow, "hour")) {
+    } else if (dayPlannerTime > currentTime) {
+      $(this).addClass("past");
+    } else if (dayPlannerTime < currentTime) {
       $(this).addClass("future");
     }
   });

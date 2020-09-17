@@ -35,14 +35,15 @@ let timeblocks = $("#timeblocks");
 
 // updated functions to set dynamic date/time - updated on an interval
 var displayDateTime;
+var now = moment();
+var jumbotronHeadTime = moment().format("dddd Do MMMM YYYY, HH:mm");
+var hourComparison = moment().format("HH");
 
 var currentDateTime = () => {
-  var now = moment();
   displayDateTime = now.clone();
   setInterval(currentDateTime, 1000);
 };
 var setCurrentDateTime = () => {
-  var jumbotronHeadTime = moment().format("dddd Do MMMM YYYY, HH:mm");
   currentDay.html(jumbotronHeadTime);
   setInterval(setCurrentDateTime, 1000);
 };
@@ -72,8 +73,6 @@ let dayPlannerTimes = [
   "4pm",
   "5pm",
 ];
-
-// hour9 to hour17
 
 var createScheduleTimeBlocks = () => {
   for (i = 0; i < dayPlannerTimes.length; i++) {
@@ -119,6 +118,28 @@ var createScheduleTimeBlocks = () => {
     newDeleteButton.click(function (event) {
       clearSingleEntry(event);
     });
+
+    let timeNow = moment().format("hA");
+    let scheduledBlocksAll = $(".time-block");
+
+    for (i = 0; i < scheduledBlocksAll.length; i++) {
+      let timeblock = $(scheduledBlocksAll[i]);
+      let timeBlockId = timeblock.attr("id");
+      let timeBlockText = timeblock.children(".row").children("textarea");
+      if (timeBlockId === timeNow) {
+        timeBlockText.addClass("present");
+        timeBlockText.removeClass("future");
+        timeBlockText.removeClass("past");
+      } else if (moment(timeBlockId, "hA").isBefore()) {
+        timeBlockText.addClass("past");
+        timeBlockText.removeClass("future");
+        timeBlockText.removeClass("present");
+      } else if (moment(timeBlockId, "hA").isAfter()) {
+        timeBlockText.addClass("future");
+        timeBlockText.removeClass("present");
+        timeBlockText.removeClass("past");
+      }
+    }
 
     iconSave = iconSave.attr("class", "save-size far fa-save fa-2x");
     iconDelete = iconDelete.attr("class", "save-size far fa-trash fa-2x");

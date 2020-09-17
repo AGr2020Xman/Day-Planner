@@ -96,6 +96,7 @@ var createScheduleTimeBlocks = () => {
       class: "hour col-2",
       id: "hourTitle",
     });
+    newParagraphLabel.html(dayPlannerTimes[i]);
     newTextInput = newTextInput.attr({
       class: "col-9 description",
       id: "inlineFormInput",

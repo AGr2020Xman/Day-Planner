@@ -49,7 +49,7 @@ $("cancelRefresh").click(function () {
   );
 });
 
-// building the timeblocks - from an array - built from the moment.js time ?
+// building the timeblocks - from an array - MATCHES moment().format("hA")
 let dayPlannerTimes = [
   "9am",
   "10am",
@@ -77,6 +77,7 @@ var createScheduleTimeBlocks = () => {
     // timeblockTitle.text(dayPlannerTimes[i]);
     newFormElement = newFormElement.attr({
       class: "time-block",
+      label: "scheduledTimes"
       id: dayPlannerTimes[i],
     });
     newSectionRow = newSectionRow.attr("class", "row");
@@ -93,11 +94,13 @@ var createScheduleTimeBlocks = () => {
       type: "submit",
       "data-event": "none",
       class: "col-2 savebutton btn align-middle",
+      aria-label: "save-buttons",
     });
     newDeleteButton = newDeleteButton.attr({
       type: "submit",
       "data-event": "none",
       class: "col-2 deletebutton btn align-middle",
+      aria-label: "delete-buttons"
     });
 
     newSaveButton.click(function (event) {

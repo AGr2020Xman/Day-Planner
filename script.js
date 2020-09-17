@@ -22,7 +22,7 @@ $(document).ready(function () {
 
 // updated functions to set dynamic date/time - updated on an interval
 let currentDay = $("#currentDay");
-let timeblocks = $("#timeblocks");
+let timeblocks = $("timeblocks");
 var displayDateTime;
 var now = moment();
 var jumbotronHeadTime = moment().format("dddd Do MMMM YYYY, HH:mm");
@@ -115,53 +115,18 @@ var createScheduleTimeBlocks = () => {
     $(".time-block").each(function (index, value) {
       if (index === timeNow) {
         $(value).addClass("present");
+        $(value).removeClass("future");
+        $(value).removeClass("past");
       } else if (moment(index, "hA").isBefore()) {
         $(value).addClass("past");
+        $(value).removeClass("present");
+        $(value).removeClass("future");
       } else if (moment(index, "hA").isAfter()) {
         $(value).addClass("future");
+        $(value).removeClass("past");
+        $(value).removeClass("present");
       }
-      // Or $(this).css("background-color", "purple");
     });
-
-    // let scheduledBlocksAll = $(".time-block");
-    // scheduledBlocksAll.each(function (index) {
-    //   let timeBlockId = $(scheduledBlocksAll[index]).attr("id");
-    //   let timeBlockText = $(scheduledBlocksAll[index])
-    //     .children(".row")
-    //     .children("textarea");
-    //   if (timeBlockId === timeNow) {
-    //     timeBlockText.addClass("present");
-    //     timeBlockText.removeClass("future");
-    //     timeBlockText.removeClass("past");
-    //   } else if (moment(timeBlockId, "hA").isBefore()) {
-    //     timeBlockText.addClass("past");
-    //     timeBlockText.removeClass("future");
-    //     timeBlockText.removeClass("present");
-    //   } else if (moment(timeBlockId, "hA").isAfter()) {
-    //     timeBlockText.addClass("future");
-    //     timeBlockText.removeClass("present");
-    //     timeBlockText.removeClass("past");
-    //   }
-    // });
-
-    // for (let i = 0; i < scheduledBlocksAll.length; i++) {
-    //   let timeblock = $(scheduledBlocksAll[i]);
-    //   let timeBlockId = timeblock.attr("id");
-    //   let timeBlockText = timeblock.children(".row").children("textarea");
-    //   if (timeBlockId === timeNow) {
-    //     timeBlockText.addClass("present");
-    //     timeBlockText.removeClass("future");
-    //     timeBlockText.removeClass("past");
-    //   } else if (moment(timeBlockId, "hA").isBefore()) {
-    //     timeBlockText.addClass("past");
-    //     timeBlockText.removeClass("future");
-    //     timeBlockText.removeClass("present");
-    //   } else if (moment(timeBlockId, "hA").isAfter()) {
-    //     timeBlockText.addClass("future");
-    //     timeBlockText.removeClass("present");
-    //     timeBlockText.removeClass("past");
-    //   }
-    // }
 
     iconSave = iconSave.attr("class", "save-size fa fa-save fa-2x");
     iconDelete = iconDelete.attr("class", "save-size fa fa-trash fa-2x");

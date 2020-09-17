@@ -124,8 +124,8 @@ var createScheduleTimeBlocks = () => {
   }
 
   let timeNow = moment().format("hA");
-
-  $(".time-block").each(function (index, value) {
+  // difficult section - took many hours
+  $(".time-block").each(function (index) {
     // debugger;
     console.log(dayPlannerTimes[index], timeNow.toLowerCase());
     if (dayPlannerTimes[index] === timeNow.toLowerCase()) {

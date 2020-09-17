@@ -3,6 +3,7 @@
 $(document).ready(function () {
   refreshPageOnHour();
   currentDateTime();
+  setCurrentDateTime();
   createScheduleTimeBlocks();
   getSavedEntries();
 });
@@ -22,26 +23,23 @@ var refreshPageOnHour = () => {
 
   let timeUntilRefresh = setInterval(() => {
     secondsPassed++;
-    showAndHideCard();
+    // showAndHideCard();
   }, 1000);
 };
 
-var showAndHideRefreshModal = () => {
-  if (secondsPassed === totalTimeUntilRefresh) {
-    // fallback on confirm if all else fails
-    $("#automaticRefreshModal").modal("show");
-    $("#saveAllButton").on('click', function(){
-        $("#automaticRefreshModal").modal("hide");
-        window.location.reload();
-    })
-} else if {
-    $("cancelRefresh").on('click')
-    $("#pageRefreshDisabled").toast()
-        "Automatic refresh is now disabled. It will re-enable once you refresh the page manually."
-      );
-    }
-  }
-};
+// var showAndHideRefreshModal = () => {
+//   if (secondsPassed === totalTimeUntilRefresh) {
+//     // fallback on confirm if all else fails
+//     $("#automaticRefreshModal").modal("show");
+//     $("#saveAllButton").on('click', function(){
+//         $("#automaticRefreshModal").modal("hide");
+//         window.location.reload();
+//     })
+// } else if {
+//     $("cancelRefresh").on('click' function() {
+//     $("#pageRefreshDisabled").toast("Automatic refresh is now disabled. It will re-enable once you refresh the page manually.")
+//     });
+//   };
 
 // building the timeblocks - from an array - built from the moment.js time ?
 let dayPlannerTimes = [
@@ -66,13 +64,19 @@ var createScheduleTimeBlocks = () => {
     let newTextInput = $("<textarea>");
     let newSaveButton = $("<button>");
     let iconSave = $("<i>");
+    let timeblockTitle = $("#hourTitle");
 
+    // dataid or something unique
+    // timeblockTitle.text(dayPlannerTimes[i]);
     newFormElement = newFormElement.attr({
       class: "time-block",
       id: dayPlannerTimes[i],
     });
     newSectionRow = newSectionRow.attr("class", "row");
-    newParagraphLabel = newParagraphLabel.attr("class", "hour col-2");
+    newParagraphLabel = newParagraphLabel.attr({
+      class: "hour col-2",
+      id: "hourTitle",
+    });
     newTextInput = newTextInput.attr({
       class: "col-9 description",
       id: "inlineFormInput",
@@ -81,6 +85,7 @@ var createScheduleTimeBlocks = () => {
       type: "submit",
       "data-event": "none",
       class: "col-2 savebutton",
+      id: "saveButtonId",
     });
     iconSave = iconSave.attr("class", "save-size fa-save");
 
@@ -93,19 +98,23 @@ var createScheduleTimeBlocks = () => {
   }
 };
 
+// legacy code to set static date time
+// var currentDateTime = () => {
+//   currentDay.text(moment().format("dddd Do MMMM YYYY, HH:mm"));
+// };
+
+// updated functions to set dynamic date/time - updated on an interval
+var displayDateTime;
 var currentDateTime = () => {
-  currentDay.text(moment().format("dddd, MMMM Do"));
+  var now = moment();
+  displayDateTime = now.clone();
+  setInterval(currentDateTime, 1000);
 };
-
-// open dayplanner - top of page - Current Date/Year
-// day planner organised in 1 hour blocks starting @ 9am - ending @ 5pm
-// Times in the past, will be grayed out + normal size
-// Present time will be slightly hovering + different colour
-// future times will be green and normal sized
-
-// I want to create 8 1 hour time blocks (dynamically probably)/or maybe preset - with dynamic class changing LINKED to the moment
-
-// let time = moment().format("h:mm:ss");
+var setCurrentDateTime = () => {
+  var jumbotronHeadTime = moment().format("dddd Do MMMM YYYY, HH:mm");
+  currentDay.html(jumbotronHeadTime);
+  setInterval(setCurrentDateTime, 1000);
+};
 
 // and edit local storage
 var editEntry = () => {};
@@ -161,24 +170,39 @@ var createSavedEntries = () => {
 };
 
 // to local storage - functions
-var saveEntry = (time, input) => {
-  // push entries with these details
-  savedPlanEntries.push({
-    time: time,
-    event: input,
-  });
-  localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
-};
+var saveSingleEntry = (event) => {
+  event.preventDefault();
+  let timeblockEvent = $(event.target).closest("form").find("textarea").val();
+  let timeblockEventTime = $(event.target).closest("form").attr("id");
+  if (timeblockEvent === "") {
+    return;
+  }
 
+  let newTimeblockEntry = {
+    Entry: timeblockEvent,
+    Timeslot: timeblockEventTime
+  }:
+
+  savedPlanEntries = JSON.parse(localStorage.getItem('savedPlanEntries'));
+  if (savedPlanEntries === null) {
+    savedPlanEntries [];
+  } else {
+    savedPlanEntries.push(newTimeblockEntry);
+    localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
+  };
 
 // not yet functional
-var saveAllEntries = (time, input) => {
-  (savedPlanEntries.push({
-    time: time,
-    event: input,
-  });
-  localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
-};
+// var saveAllEntries = (time, input) => {
+//   for (i=0;i<)
+
+// savedPlanEntries.push({
+//   time: time,
+//   event: input,
+// });
+//   // localStorage.setItem("savedPlanEntries", JSON.stringify(savedPlanEntries));
+// };
+
+$("#saveButtonId").click(saveSingleEntry);
 
 //   clear all onclick functions: TODO
 $("#clearAllButton").on("click", function () {

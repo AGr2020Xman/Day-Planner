@@ -194,6 +194,7 @@ var clearAllEvents = () => {
   scheduleObject = {};
 };
 
+// FUTURE - have the localStorage EMPTY - not just leaving a blank entry point
 var clearSingleEntry = (event) => {
   event.preventDefault();
   // localStorage.removeItem()
@@ -210,10 +211,3 @@ var clearSingleEntry = (event) => {
     }
   }
 };
-
-// Object.keys(savedPlanEntries).forEach((element) => {
-//   //get the timeblock ID (9am/10am/11am) which is the element
-//   // access the textarea + update the .val()
-//   $("#" + element)
-//     .find("textarea")
-//     .val(savedPlanEntries[element]);

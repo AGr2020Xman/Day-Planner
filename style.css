@@ -2,6 +2,7 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   line-height: 1;
+  background-image: url("./Assets/watercolor.png");
 }
 
 textarea {
@@ -13,10 +14,19 @@ textarea {
   padding: 10px;
 }
 
+#hourTitle {
+  background-color: teal;
+  color: whitesmoke;
+  font-size: medium;
+  font-weight: bold;
+  text-align: center, justify;
+  border-radius: 10px;
+}
+
 .jumbotron {
   text-align: center;
-  background-color: transparent;
-  color: black;
+  background-color: grey;
+  color: whitesmoke;
   border-radius: 0;
   border-bottom: 10px solid black;
 }
@@ -27,7 +37,7 @@ textarea {
 
 .time-block {
   text-align: center;
-  border-radius: 15px;
+  border-radius: 10px;
 }
 
 .row {

@@ -4,6 +4,30 @@ Create a simple calendar application that allows the user to save events for eac
 
 You'll need to use the [Moment.js](https://momentjs.com/) library to work with date and time. Be sure to read the documentation carefully and concentrate on using Moment.js in the browser.
 
+The following animation demonstrates the application functionality:
+
+![day planner demo](./Assets/05-third-party-apis-homework-demo.gif)
+
+## Review
+
+You are required to submit the following for review:
+
+- The URL of the deployed application.
+
+- The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
+
+---
+
+© 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
+
+# Third-Party APIs: Day Planner
+
+As I proceed further in into my career as a web developer, I will probably be asked to complete a coding assessment. This project addresses this with a combination of multiple-choice questions and interactive challenges. I've built a timed code quiz with multiple-choice questions. This app will run in the browser and feature dynamically updated HTML and CSS powered by your JavaScript code. It will also feature a clean and polished user interface and be responsive, ensuring that it adapts to multiple screen sizes.
+
+## Contents
+
+- index.html, script.js, style.css, Assets (images and originally provided demo)
+
 ## User Story
 
 ```
@@ -30,17 +54,30 @@ WHEN I refresh the page
 THEN the saved events persist
 ```
 
-The following animation demonstrates the application functionality:
+#### Deployed application
 
-![day planner demo](./Assets/05-third-party-apis-homework-demo.gif)
+Link: https://agr2020xman.github.io/Day-Planner/
 
-## Review
+### Code
 
-You are required to submit the following for review:
+Some static modal elements are stored in the HTML. Meanwhile JS is dynamically using moment.js to update time, and compare these values against each scheduled block. The colour changes to reflect where you are in the day. You can save to local storage to come back to your planner later. You may also clear the events immediately.
 
-* The URL of the deployed application.
+#### Sample of deployed application
 
-* The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
+_The planner with stored data_
+![](Assets/with_storage.JPG)
 
-- - -
+_The planner changes colour based on the time_
+![](Assets/withFuturePast.JPG)
+
+\_
+
+### Authors
+
+- Some scaffold HTML provided by Trilogy
+- Code by \_Andr&eacute; Grech - 18/9/2020
+- CSS is a mixture of custom styles and Bootstrap presets to assist in responsiveness
+
+---
+
 © 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.

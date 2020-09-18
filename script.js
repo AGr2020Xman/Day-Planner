@@ -139,9 +139,9 @@ var createScheduleTimeBlocks = () => {
     if (dayPlannerTimes[index] === timeNow.toLowerCase()) {
       $(this).addClass("present");
     } else if (dayPlannerTime > currentTime) {
-      $(this).addClass("past");
-    } else if (dayPlannerTime < currentTime) {
       $(this).addClass("future");
+    } else if (dayPlannerTime < currentTime) {
+      $(this).addClass("past");
     }
   });
 };

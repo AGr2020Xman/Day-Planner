@@ -129,8 +129,8 @@ var createScheduleTimeBlocks = () => {
       }
     }
 
-    iconSave = iconSave.attr("class", "save-size far fa-save fa-2x");
-    iconDelete = iconDelete.attr("class", "save-size far fa-trash fa-2x");
+    iconSave = iconSave.attr("class", "save-size fa fa-save fa-2x");
+    iconDelete = iconDelete.attr("class", "save-size fa fa-trash fa-2x");
 
     timeblocks.append(newFormElement);
     newFormElement.append(newSectionRow);

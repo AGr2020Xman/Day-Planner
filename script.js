@@ -203,7 +203,6 @@ var clearAllEvents = () => {
   clearLocalStorage();
   timeblocks.find("textarea").val("");
   timeblocks.find("button").attr("data-event", "none");
-  scheduleObject = {};
 };
 
 // FUTURE - have the localStorage EMPTY - not just leaving a blank entry point

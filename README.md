@@ -40,6 +40,12 @@ Link: https://agr2020xman.github.io/Day-Planner/
 
 Some static modal elements are stored in the HTML. Meanwhile JS is dynamically using moment.js to update time, and compare these values against each scheduled block. The colour changes to reflect where you are in the day. You can save to local storage to come back to your planner later. You may also clear the events immediately.
 
+#### Tools 
+
+- [VScode](https://code.visualstudio.com/) - The editor of choice.
+- [jQuery](https://api.jquery.com/)
+- [Bootstrap](https://getbootstrap.com/)
+
 #### Sample of deployed application
 
 _The planner with stored data_
@@ -54,6 +60,10 @@ _The planner changes colour based on the time_
 - Code by \_Andr&eacute; Grech - 18/9/2020
 - CSS is a mixture of custom styles and Bootstrap presets to assist in responsiveness
 
----
+#### License
 
-© 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
+- [MIT License](https://opensource.org/licenses/MIT)
+
+#### Acknowledgments
+
+- © 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
